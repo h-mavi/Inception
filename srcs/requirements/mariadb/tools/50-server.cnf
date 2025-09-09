@@ -1,0 +1,35 @@
+#specifica che le info. sotto sono solo per il server daemon di Mariadb
+[mysqld]
+
+#setting di base:
+user		    = mysql                         #run il server come mysql per sicurezza
+pid-file	    = /var/run/mysqld/mysqld.pid    #dir per il file ID del processo
+socket		    = /var/run/mysqld/mysqld.sock   #path per il Unix socket file
+port		    = 3306                          #Mariadb ascolta sulla porta 3306
+basedir	    	= /usr                          #dir per la installazione di Mariadb
+datadir	    	= /var/lib/mysql                #dir dove i file del database staranno
+tmpdir		    = /tmp                          #dir per i file temporanei
+lc-messages-dir	= /usr/share/mysql              #dir per language/message files
+
+skip-external-locking                           #disabilita locking esterno per performance
+skip-networking = false                         #permette il networking (se e' true disabilita le connessioni TCP/IP)
+bind-address    = 0.0.0.0                       #ascolta au ogni interfaccia dei network (per remote connections)
+
+#gestione della memoria
+key_buffer_size		    = 16M                   #mem. pe MyISAM index blocks
+max_allowed_packet	    = 16M                   #max size dei pacchetti
+thread_stack	        = 192K                  #stack size per ogni thread
+thread_cache_size       = 8                     #num. di threads da tenere della cache
+myisam_recover_options  = BACKUP                #opzioni per il recupero dei MyISAM table (backup dei tables corrotti)
+query_cache_limit	    = 1M                    #max size di un querry che puo' essere cached
+query_cache_size        = 16M                   #tot mem. per query cache
+
+#path per l'error_log
+log_error = /var/log/mysql/error.log
+
+expire_logs_days	    = 10                    #logs piu' vecchi di 10 giorni rimossi
+max_binlog_size         = 100M                  #max size dei logs file 
+
+#default set e collation dei caratteri per il server
+character-set-server    = utf8mb4
+collation-server        = utf8mb4_general_ci
