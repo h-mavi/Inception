@@ -2,13 +2,6 @@ FROM debian:11
 
 # ENV DEBIAN_FRONTEND=noninteractive
 
-# ENV MYSQL_ROOT_USER=my_root_user
-# ENV MYSQL_ROOT_PASSWORD=myrootpassword
-
-# ENV MYSQL_USER=mywpuser
-# ENV MYSQL_DATABASE=wordpress
-# ENV MYSQL_PASSWORD=mywppassword
-
 
 RUN apt-get update \
     && apt-get install -y mariadb-server \
@@ -22,6 +15,9 @@ COPY ./tools/setup.sh /setup.sh
 RUN chmod +x /setup.sh
 
 EXPOSE 3306
+
+HEALTHCHECK --interval=5s --timeout=5s --start-period=10s --retries=5 \
+        CMD [ 'mysqladmin ping -u root -p"${MYSQL_ROOT_PASSWORD}" || exit 1' ]
 
 ENTRYPOINT ["sh", "/setup.sh"]
 CMD ["mysqld"]
