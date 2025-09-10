@@ -9,29 +9,34 @@ services:
       - mariadb_data:/var/lib/mysql
     networks:
       - inception
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
 
-  # wordpress:
-  #   build: ./requirements/wordpress
-  #   container_name: wordpress
-  #   env_file: .env
-  #   depends_on:
-  #     - mariadb
-  #   volumes:
-  #     - wordpress_data:/var/www/html
-  #   networks:
-  #     - inception
+  wordpress:
+    build: ./requirements/wordpress
+    container_name: wordpress
+    env_file: .env
+    depends_on:
+      - mariadb
+    volumes:
+      - wordpress_data:/var/www/html
+    networks:
+      - inception
 
-  # nginx:
-  #   build: ./requirements/nginx
-  #   container_name: nginx
-  #   depends_on:
-  #      - wordpress
-  #   ports:
-  #     - "443:443"
-  #   volumes:
-  #     - ./requirements/nginx:/var/www/html
-  #   networks:
-  #     - inception
+  nginx:
+    build: ./requirements/nginx
+    container_name: nginx
+    depends_on:
+      - wordpress
+    ports:
+      - "443:443"
+    volumes:
+      - wordpress_data:/var/www/html
+    networks:
+      - inception
 
 volumes:
   mariadb_data:

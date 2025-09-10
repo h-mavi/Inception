@@ -55,7 +55,7 @@ COPY default.conf /etc/nginx/conf.d/default.conf
 RUN mkdir -p /run/nginx
 
 #-copia index.html alla root di default di Nginx
-COPY index.html /var/www/html/index.html
+#COPY index.html /var/www/html/index.html
 
 #-espone la porta 443 così da accedere a Nginx dal browser (la port deve però essere 443, ma per ora non
 # è accessibile perché la porta 443 è di default per HTTPS e richede un certificato SSL. Inoltre le

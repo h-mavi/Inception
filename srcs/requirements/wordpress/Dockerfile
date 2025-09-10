@@ -13,25 +13,28 @@ FROM debian:11
 #-php-xml per il parsing di file xml (usato da wp)
 #-php-mbstring per la gestione di stringhe multibyte
 RUN apt-get update \
-    && apt-get install -y wget tar \
+    && apt-get install -y wget tar curl vim openssl mariadb-client \
     && apt-get install -y php php-fpm php-mysql php-cli php-curl php-gd php-xml php-mbstring \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
-#-scarichiamo la versione 6.8 di wordpress e la salviamo in '/tmp/wordpress.tar.gz' nel
-# container
-#-estraiamo il contenuto dell'archivio nella directory '/var/www/html
-#-rimuoviamo l'archivio scaricato per liberare spazio
-RUN wget https://wordpress.org/wordpress-6.8.tar.gz -O /tmp/wordpress.tar.gz \
-    && tar -xzf /tmp/wordpress.tar.gz -C /var/www/html \
-    && rm /tmp/wordpress.tar.gz
+#????????????????????????
+RUN sed -i 's|listen = .*|listen = 9000|' /etc/php/7.4/fpm/pool.d/www.conf
 
+RUN wget https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar \
+    && chmod +x wp-cli.phar \
+    && mv wp-cli.phar /usr/local/bin/wp \
+    && wp cli update
+
+RUN mkdir -p /run/php
+
+COPY ./tools/setup_test.sh /
+RUN chmod +x /setup_test.sh
 WORKDIR /var/www/html/
-
-RUN chown -R www-data:www-data /var/www/html/
 
 EXPOSE 9000
 
-#-php-fpm7.4 -F : avvia php-fpm in foreground (l'opzione -F è per fare in modo che
-# il processo rimanga in foreground, necessario per Docker per mantenere il container attivo)
-CMD ["php-fpm7.4", "-F"]
+ENTRYPOINT [ "sh" , "/setup_test.sh" ]
+
+#RUN chown -R www-data:www-data /var/www/html/
+#RUN chmod -R 755 /var/www/html/
