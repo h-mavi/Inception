@@ -13,7 +13,8 @@ lc-messages-dir	= /usr/share/mysql              #dir per language/message files
 
 skip-external-locking                           #disabilita locking esterno per performance
 skip-networking = false                         #permette il networking (se e' true disabilita le connessioni TCP/IP)
-bind-address    = 0.0.0.0                       #ascolta au ogni interfaccia dei network (per remote connections)
+bind-address    = 0.0.0.0                     #ascolta au ogni interfaccia dei network (per remote connections)
+# 127.0.0.1
 
 #gestione della memoria
 key_buffer_size		    = 16M                   #mem. pe MyISAM index blocks
