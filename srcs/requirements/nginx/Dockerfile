@@ -23,6 +23,7 @@ RUN mkdir -p /run/nginx
 
 #COPY muahah.html /var/www/html/muahah.html
 
-EXPOSE 443
+#EXPOSE 443
+
 
 CMD ["nginx", "-g", "daemon off;"]

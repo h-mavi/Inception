@@ -27,8 +27,6 @@ else
     echo "User ${WORDPRESS_USER} already exists."
 fi
 
-wp plugin update --all --allow-root
-
 #echo "Fixing WordPress URLs..."
 #wp option update siteurl 'https://mfanelli.42.fr' --allow-root
 #wp option update home 'https://mfanelli.42.fr' --allow-root
