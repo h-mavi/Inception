@@ -13,8 +13,7 @@ if [ ! -f "$WP_PATH/wp-config.php" ]; then
     echo "Creating wp-config.php..."
     wp config create --dbname=${WORDPRESS_DB_NAME} --dbuser=${WORDPRESS_DB_USER} --dbpass=${WORDPRESS_DB_PASSWORD} --dbhost=mariadb --allow-root
     echo "Installing WordPress..."
-    wp core install --url=localhost --title="Ora funziona?" --admin_user=${WORDPRESS_ADMIN_USER} --admin_password=${WORDPRESS_ADMIN_PASSWORD} --admin_email=${WORDPRESS_ADMIN_EMAIL} --allow-root
-    #wp core install --url="mfanelli.42.fr" --title="Ora funziona?" --admin_user=${WORDPRESS_ADMIN_USER} --admin_password=${WORDPRESS_ADMIN_PASSWORD} --admin_email=${WORDPRESS_ADMIN_EMAIL} --allow-root
+    wp core install --url="mfanelli.42.fr" --title="Ora funziona?" --admin_user=${WORDPRESS_ADMIN_USER} --admin_password=${WORDPRESS_ADMIN_PASSWORD} --admin_email=${WORDPRESS_ADMIN_EMAIL} --allow-root
 else
     echo "wp-config.php already exists."
     echo "WordPress is already installed."
@@ -28,8 +27,8 @@ else
 fi
 
 #echo "Fixing WordPress URLs..."
-#wp option update siteurl 'https://mfanelli.42.fr' --allow-root
-#wp option update home 'https://mfanelli.42.fr' --allow-root
+wp option update siteurl 'https://mfanelli.42.fr' --allow-root
+wp option update home 'https://mfanelli.42.fr' --allow-root
 
 echo "Starting PHP-FPM..."
 
