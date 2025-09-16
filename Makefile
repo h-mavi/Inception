@@ -43,5 +43,7 @@ ls :
 
 .SILENT:
 
+#debain 11 e debian bullseye-slim sono la stessa cosa, per una versione più
+# leggere si può usare debian:bullseye-slim
 #continua a non funzionare sempre, e c'e' da sistemare la cosa dell'url
 #fonti : https://www.digitalocean.com/community/tutorials/nginx-rewrite-url-rules

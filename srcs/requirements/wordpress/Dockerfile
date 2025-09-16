@@ -1,8 +1,8 @@
-FROM debian:11
+FROM debian:bullseye-slim
 
 RUN apt-get update \
-    && apt-get install -y wget tar curl openssl mariadb-client \
-    && apt-get install -y php php-fpm php-mysql php-cli php-curl php-gd php-xml php-mbstring \
+    && apt-get install -y wget curl mariadb-client \
+    && apt-get install -y php php-fpm php-mysql php-cli php-curl \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 

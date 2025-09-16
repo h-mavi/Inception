@@ -1,5 +1,5 @@
 #-usa Debian come base image
-FROM debian:11
+FROM debian:bullseye-slim
 
 RUN apt-get update \
     && apt-get install -y nginx openssl \
