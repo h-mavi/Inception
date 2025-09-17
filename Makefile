@@ -9,23 +9,24 @@ build :
 run :
 				cd srcs && \
 				docker-compose start
+
+stop :
+				cd srcs && \
+				docker-compose stop
+
 down :
 				cd srcs && \
 				docker-compose down
 
 rip : stop down
 
-stop :
-				cd srcs && \
-				docker-compose stop
+# nginx :
+# 				cd srcs/requirements/nginx && \
+# 				docker build -t nginx . && docker run -p 443:443 nginx
 
-nginx :
-				cd srcs/requirements/nginx && \
-				docker build -t nginx . && docker run -p 443:443 nginx
-
-mariadb :
-				cd srcs/requirements/mariadb && \
-				docker build -t mariadb . && docker run -p 3306:3306 mariadb
+# mariadb :
+# 				cd srcs/requirements/mariadb && \
+# 				docker build -t mariadb . && docker run -p 3306:3306 mariadb
 
 clean :
 				docker system prune -af --volumes && docker volume rm srcs_mariadb_data srcs_wordpress_data
@@ -35,12 +36,15 @@ logs :
 				docker-compose logs
 
 ls :
-				docker ps && \
+				docker ps -a && \
 				echo "-----------------------------------------------------------------------" && \
 				docker image ls && \
 				echo "-----------------------------------------------------------------------" && \
-				docker volume ls
-
+				docker volume ls && \
+				echo "-----------------------------------------------------------------------" && \
+				docker network ls && \
+				echo "-----------------------------------------------------------------------" && \
+				docker context ls
 .SILENT:
 
 #debain 11 e debian bullseye-slim sono la stessa cosa, per una versione più
