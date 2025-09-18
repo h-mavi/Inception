@@ -48,6 +48,8 @@ volumes:
   mariadb_data:
   wordpress_data:
 
+#fonti da guardare -> https://docs.docker.com/engine/storage/volumes/
+
 networks:
   inception:
     driver: bridge

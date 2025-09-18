@@ -5,10 +5,10 @@ set -eux
 FIRST=1
 
 if [ ! -d /var/lib/mysql/mysql ]; then
-    echo "Initializing MariaDB data directory"
+    echo "\033[1;37mInitializing MariaDB data directory\033[0m"
     mysqld --initialize-insecure --user=mysql --datadir=/var/lib/mysql
 else
-    echo "MariaDB data directory already initialized"
+    echo "\033[1;37mMariaDB data directory already initialized\033[0m"
     FIRST=0
 fi
 
@@ -16,11 +16,11 @@ mkdir -p /var/run/mysqld
 chown -R mysql:mysql /var/run/mysqld
 chown -R mysql:mysql /var/lib/mysql
 
-echo "Starting MariaDB server"
+echo "\033[1;37mStarting MariaDB server\033[0m"
 mysqld_safe --user=mysql --datadir=/var/lib/mysql --pid-file=/var/run/mysqld/mysqld.pid &
 pid="$!"
 
-echo "Waiting for MariaDB to start... (pid: $pid)"
+echo "\033[1;37mWaiting for MariaDB to start...\033[0m"
 for i in {30..0}; do
     if mysqladmin ping --silent; then
         break
@@ -29,19 +29,19 @@ for i in {30..0}; do
 done
 
 if [ "$i" = 0 ]; then
-    echo >&2 "MariaDB did not start"
+    echo >&2 "\033[1;37mMariaDB did not start\033[0m"
     exit 1
 fi
 
 if [ "$FIRST" -eq "1" ]; then
     DB_PASS=""
-    echo "First time setup"
+    echo "\033[1;37mFirst time setup\033[0m"
 else
     DB_PASS="-p${MYSQL_ROOT_PASSWORD}"
-    echo "Not first time setup"
+    echo "\033[1;37mNot first time setup\033[0m"
 fi
 
-echo "Setting up database and users"
+echo "\033[1;37mSetting up database and users\033[0m"
 mysql -u root ${DB_PASS} <<EOSQL
     CREATE USER IF NOT EXISTS 'root'@'localhost' IDENTIFIED BY '${MYSQL_ROOT_PASSWORD}';
     ALTER USER 'root'@'localhost' IDENTIFIED BY '${MYSQL_ROOT_PASSWORD}';
@@ -60,11 +60,9 @@ mysql -u root ${DB_PASS} <<EOSQL
     FLUSH PRIVILEGES;
 EOSQL
 
-echo "Stopping MariaDB server"
-
 mysqladmin -u root -p"${MYSQL_ROOT_PASSWORD}" shutdown
 wait "$pid"
 
-echo "Restarting MariaDB server"
+echo "\033[1;37mStarting MariaDB server\033[0m"
 touch /tmp/mariadb_ready
 mysqld --user=mysql --datadir=/var/lib/mysql --pid-file=/var/run/mysqld/mysqld.pid
