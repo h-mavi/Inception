@@ -16,7 +16,7 @@ stop :
 
 down :
 				cd srcs && \
-				docker-compose down
+				docker-compose down -v
 
 rip : stop down
 
