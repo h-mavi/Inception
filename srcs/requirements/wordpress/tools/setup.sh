@@ -6,6 +6,16 @@ WP_PATH=/var/www/html
 
 cd $WP_PATH
 
+echo "\033[1;37mWaiting for MariaDB to be ready...\033[0m"
+
+until mysqladmin ping -h"mariadb" --silent; do
+    echo "\033[1;37mWaiting...\033[0m"
+    sleep 1
+done
+
+echo "\033[1;37mMariaDB is ready!\033[0m"
+
+
 if [ ! -f "$WP_PATH/wp-config.php" ]; then
     echo "\033[1;37mDownloading WordPress core...\033[0m"
     wp core download --allow-root

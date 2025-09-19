@@ -29,7 +29,7 @@ rip : stop down
 # 				docker build -t mariadb . && docker run -p 3306:3306 mariadb
 
 clean :
-				docker system prune -af --volumes && docker volume rm srcs_mariadb_data srcs_wordpress_data
+				docker system prune -af --volumes ; docker volume prune -af ; sudo rm -rf /home/mavi/data/mariadb_data/* && sudo rm -rf /home/mavi/data/wordpress_data/* 
 
 logs :
 				cd srcs && \

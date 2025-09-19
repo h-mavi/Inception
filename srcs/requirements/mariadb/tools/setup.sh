@@ -6,7 +6,8 @@ FIRST=1
 
 if [ ! -d /var/lib/mysql/mysql ]; then
     echo "\033[1;37mInitializing MariaDB data directory\033[0m"
-    mysqld --initialize-insecure --user=mysql --datadir=/var/lib/mysql
+    mysql_install_db --user=mysql --datadir=/var/lib/mysql
+    # mysqld --initialize-insecure --user=mysql --datadir=/var/lib/mysql
 else
     echo "\033[1;37mMariaDB data directory already initialized\033[0m"
     FIRST=0
