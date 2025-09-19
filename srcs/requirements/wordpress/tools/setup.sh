@@ -2,6 +2,10 @@
 
 set -eux
 
+export WORDPRESS_DB_PASSWORD=$(cat /run/secrets/wordpress_db_password)
+export WORDPRESS_ADMIN_PASSWORD=$(cat /run/secrets/wordpress_admin_password)
+export WORDPRESS_PASSWORD=$(cat /run/secrets/wordpress_password)
+
 WP_PATH=/var/www/html
 
 cd $WP_PATH

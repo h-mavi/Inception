@@ -4,6 +4,9 @@ set -eux
 
 FIRST=1
 
+export MYSQL_ROOT_PASSWORD=$(cat /run/secrets/mysql_root_password)
+export MYSQL_PASSWORD=$(cat /run/secrets/mysql_password)
+
 if [ ! -d /var/lib/mysql/mysql ]; then
     echo "\033[1;37mInitializing MariaDB data directory\033[0m"
     mysql_install_db --user=mysql --datadir=/var/lib/mysql

@@ -5,11 +5,13 @@ services:
     build: ./requirements/mariadb
     container_name: mariadb
     env_file: .env
-    volumes:
-      - /home/mavi/data/mariadb_data:/var/lib/mysql
-      # - mariadb_data:/var/lib/mysql
+    secrets:
+      - mysql_root_password
+      - mysql_password
     networks:
       - inception
+    volumes:
+      - /home/mavi/data/mariadb_data:/var/lib/mysql
     healthcheck:
       test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
       interval: 10s
@@ -21,11 +23,14 @@ services:
     build: ./requirements/wordpress
     container_name: wordpress
     env_file: .env
+    secrets:
+      - wordpress_db_password
+      - wordpress_admin_password
+      - wordpress_password
     depends_on:
       - mariadb
     volumes:
       - /home/mavi/data/wordpress_data:/var/www/html
-      # - wordpress_data:/var/www/html
     networks:
       - inception
     restart : always
@@ -39,17 +44,36 @@ services:
       - "443:443"
     volumes:
       - /home/mavi/data/wordpress_data:/var/www/html
-      # - wordpress_data:/var/www/html
     networks:
       - inception
     restart : always
 
-# volumes:
-#   mariadb_data:
-#   wordpress_data:
-
-#fonti da guardare -> https://docs.docker.com/engine/storage/volumes/
+secrets:
+  mysql_root_password:
+    file: ./../secrets/mysql_root_psw.txt
+  mysql_password:
+    file: ./../secrets/mysql_psw.txt
+  wordpress_db_password:
+    file: ./../secrets/wp_db_psw.txt
+  wordpress_admin_password:
+    file: ./../secrets/wp_admin_psw.txt
+  wordpress_password:
+    file: ./../secrets/wp_psw.txt
 
 networks:
   inception:
     driver: bridge
+
+
+
+
+
+#- - - - - - - - - - - - - - - -
+# Scarti
+# volumes:
+#   mariadb_data:
+#   wordpress_data:
+#- - - - - - - - - - - - - - - -
+# - mariadb_data:/var/lib/mysql
+# - wordpress_data:/var/www/html
+#- - - - - - - - - - - - - - - -
