@@ -1,0 +1,83 @@
+version: '3.8'
+
+services:
+  mariadb:
+    image: mariadb
+    build: ./requirements/mariadb
+    container_name: mariadb
+    env_file: .env
+    secrets:
+      - mysql_root_password
+      - mysql_password
+    volumes:
+      - /home/mavi/data/mariadb_data:/var/lib/mysql
+    networks:
+      - inception
+
+  wordpress:
+    image: wordpress
+    build: ./requirements/wordpress
+    container_name: wordpress
+    env_file: .env
+    depends_on:
+      - mariadb
+    secrets:
+      - wordpress_db_password
+      - wordpress_admin_password
+      - wordpress_password
+    volumes:
+      - /home/mavi/data/wordpress_data:/var/www/html
+    networks:
+      - inception
+    restart : always
+
+  nginx:
+    image: nginx
+    build: ./requirements/nginx
+    container_name: nginx
+    depends_on:
+      - wordpress
+    volumes:
+      - /home/mavi/data/wordpress_data:/var/www/html
+    ports:
+      - "443:443"
+    networks:
+      - inception
+    restart : always
+
+secrets:
+  mysql_root_password:
+    file: ./../secrets/mysql_root_psw.txt
+  mysql_password:
+    file: ./../secrets/mysql_psw.txt
+  wordpress_db_password:
+    file: ./../secrets/wp_db_psw.txt
+  wordpress_admin_password:
+    file: ./../secrets/wp_admin_psw.txt
+  wordpress_password:
+    file: ./../secrets/wp_psw.txt
+
+networks:
+  inception:
+    driver: bridge
+
+
+
+
+
+#- - - - - - - - - - - - - - - -
+# Scarti
+# volumes:
+#   mariadb_data:
+#   wordpress_data:
+#- - - - - - - - - - - - - - - -
+# - mariadb_data:/var/lib/mysql
+# - wordpress_data:/var/www/html
+#- - - - - - - - - - - - - - - -
+# healthcheck:
+#       test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+#       interval: 10s
+#       timeout: 5s
+#       retries: 5
+#     restart : always
+#- - - - - - - - - - - - - - - -

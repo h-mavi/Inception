@@ -1,0 +1,3 @@
+[mysqld]
+
+log_error = /var/log/mysql/error.log
